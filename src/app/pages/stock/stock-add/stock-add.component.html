@@ -1,0 +1,50 @@
+<!-- <nb-alert *ngIf="error && errorMessage?.length && !submittedAll" outline="danger" role="alert">
+  <p class="alert-title"><b>Oh snap!</b></p>
+  <ul class="alert-message-list">
+    <li *ngFor="let error of errorMessage" class="alert-message">{{ error }}</li>
+  </ul>
+</nb-alert>
+<nb-alert *ngIf="success && successMessage?.length && !submittedAll" outline="success" role="alert">
+  <p class="alert-title"><b>Hooray!</b></p>
+  <ul class="alert-message-list">
+    <li *ngFor="let message of successMessage" class="alert-message">{{ message }}</li>
+  </ul>
+</nb-alert> -->
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12">
+  <nb-card-header>
+    Add Stock to Main Branch
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="stockForm" (ngSubmit)="onSubmit()">
+      <!-- <div class="form-group">
+        <input type="file" placeholder="Store Logo" class="form-control" (change)="fileChangeEvent($event)" formControlName="storeLogo">
+      </div> -->
+      <div class="form-group">
+        <nb-select placeholder="Select Product" [fullWidth]="true" status="primary" (selectedChange)="getAttributeByProduct($event)" formControlName="product">
+          <nb-option *ngFor="let product of productList" [value]="product.product_id">{{product.product_name}} - {{product.product_sku}}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <nb-select placeholder="Select Attribute" [fullWidth]="true" status="primary" formControlName="attribute">
+          <nb-option *ngFor="let attribute of attributeList" [value]="attribute.product_attribute_id">{{attribute.attribute_title}} - {{attribute.attribute_value}}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group">
+        <!-- <textarea nbInput fullWidth fieldSize="tiny" formControlName="quantity" placeholder="Stock Quantity"></textarea> -->
+        <input type="text" placeholder="Stock Quantity" class="form-control" formControlName="quantity">
+        <div class="stockForm-errors">
+          <ng-container *ngFor="let login of validation_messages.quantity">
+            <div class="caption status-danger"
+              *ngIf="stockForm.get('quantity').hasError(login.type) && (stockForm.get('quantity').dirty || stockForm.get('quantity').touched)">
+              <ng-container name="information-circle-outline"></ng-container> {{ login.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-group">
+        <button nbButton status="primary" [disabled]="submitted || !stockForm.valid"
+        [class.btn-pulse]="submitted" size="large">Submit</button>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

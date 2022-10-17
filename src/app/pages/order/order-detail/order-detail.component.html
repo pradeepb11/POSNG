@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-6">
+    <nb-card *ngFor="let product of products">
+      <nb-card-header>{{ product.product.product_name }}</nb-card-header>
+      <nb-card-body>
+        <div class="item text-info">
+          <div class="color bg-status-info"></div>
+          <div>
+            <h5 >Description - <span class="text-info">{{ product.product.product_description }}</span></h5>
+            <h5>Price - <span class="text-info">{{ product.product.product_price }}</span></h5>
+            <h5>SKU - <span class="text-info">{{ product.product.product_sku }}</span></h5>
+            <h5 class="text-info">{{ product.product_attribute.attribute_value }}-{{ product.product_attribute.attribute_title }}</h5>
+          </div>
+        </div>
+        <!-- <form>
+          <div class="form-group">
+            <input type="text" nbInput fullWidth placeholder="Recipients">
+          </div>
+          <div class="form-group">
+            <input type="text" nbInput fullWidth placeholder="Subject">
+          </div>
+          <div class="form-group">
+            <textarea nbInput placeholder="Message"></textarea>
+          </div>
+          <button type="submit" nbButton status="success">Send</button>
+        </form> -->
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>Payment Detail</nb-card-header>
+      <nb-card-body>
+        <nb-alert outline="primary">
+          <h5>Amount - {{ amount }} </h5>
+        </nb-alert>
+        <nb-alert outline="warning">
+          <h5>Payment Mode - {{ payment_mode }} </h5>
+        </nb-alert>
+        <nb-alert outline="danger">
+          <h5>Payment Status - {{ payment_status }} </h5>
+        </nb-alert>
+        <!-- <form>
+          <div class="form-group">
+            <input type="text" nbInput fullWidth placeholder="Recipients">
+          </div>
+          <div class="form-group">
+            <input type="text" nbInput fullWidth placeholder="Subject">
+          </div>
+          <div class="form-group">
+            <textarea nbInput placeholder="Message"></textarea>
+          </div>
+          <button type="submit" nbButton status="success">Send</button>
+        </form> -->
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

@@ -1,0 +1,155 @@
+<nb-alert *ngIf="error && errorMessage?.length && !submittedAll" outline="danger" role="alert">
+  <p class="alert-title"><b>Oh snap!</b></p>
+  <ul class="alert-message-list">
+    <li *ngFor="let error of errorMessage" class="alert-message">{{ error }}</li>
+  </ul>
+</nb-alert>
+<nb-alert *ngIf="success && successMessage?.length && !submittedAll" outline="success" role="alert">
+  <p class="alert-title"><b>Hooray!</b></p>
+  <ul class="alert-message-list">
+    <li *ngFor="let message of successMessage" class="alert-message">{{ message }}</li>
+  </ul>
+</nb-alert>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12">
+  <nb-card-body>
+    <nb-stepper #stepper>
+      <nb-step [stepControl]="firstForm" label="Store Details">
+        <form [formGroup]="firstForm" class="step-container">
+          <div class="form-group">
+            <input type="text" placeholder="Store Name" class="form-control" formControlName="storeName"
+              [ngClass]="{'form-control-danger': firstForm.invalid && (firstForm.dirty || firstForm.touched)}">
+            <div class="firstForm-errors">
+              <ng-container *ngFor="let store of validation_messages.storeName">
+                <div class="caption status-danger"
+                  *ngIf="firstForm.get('storeName').hasError(store.storeName) && (firstForm.get('storeName').dirty || firstForm.get('storeName').touched)">
+                  <ng-container name="information-circle-outline"></ng-container> {{ store.message }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="form-group">
+            <!-- <button type="submit" nbButton status="primary" size="large" (click)="onFirstSubmit()" nbStepperNext>next</button> -->
+            <!-- <button type="submit" nbButton status="primary" size="large" nbStepperNext>next</button> -->
+            <button nbButton fullWidth status="primary" (click)="onFirstSubmit()" size="large" [disabled]="submitted1 || !firstForm.valid"
+            [class.btn-pulse]="submitted1" nbStepperNext>Next</button>
+          </div>
+        </form>
+      </nb-step>
+      <nb-step [stepControl]="secondForm" label="Store Address">
+        <form [formGroup]="secondForm" class="step-container">
+          <div class="form-group">
+            <input type="file" placeholder="Store Logo" class="form-control" (change)="fileChangeEvent($event)" formControlName="storeLogo">
+          </div>
+          <div class="form-group">
+            <nb-select placeholder="Select Curency" [fullWidth]="true" status="primary" formControlName="currency">
+              <nb-option *ngFor="let curency of currencies" [value]="curency.value">{{curency.name}}</nb-option>
+              <!-- <nb-option value="INR">INR</nb-option>
+              <nb-option value="USD">USD</nb-option>
+              <nb-option value="SAR">SAR</nb-option>
+              <nb-option value="BHD">BHD</nb-option> -->
+            </nb-select>
+          </div>
+          <div class="form-group">
+            <textarea nbInput fullWidth fieldSize="tiny" formControlName="storeAddress1" placeholder="Store Address Line 1"></textarea>
+          </div>
+          <div class="form-group">
+            <textarea nbInput fullWidth fieldSize="tiny" formControlName="storeAddress2" placeholder="Store Address Line 2"></textarea>
+          </div>
+          <div class="form-group">
+            <nb-select placeholder="Select State" [fullWidth]="true" status="primary" (selectedChange)="getCityFromState($event)" formControlName="state">
+              <nb-option *ngFor="let state of states" [value]="state.id">{{state.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="form-group">
+            <nb-select placeholder="Select City" [fullWidth]="true" status="primary" formControlName="city">
+              <nb-option *ngFor="let city of cities" [value]="city.id">{{city.city_name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Pincode" class="form-control" formControlName="pincode" (change)="getAreaByPincode($event)" status="{'danger': secondForm.invalid && (secondForm.dirty || secondForm.touched)}">
+            <div class="secondForm-errors">
+              <ng-container *ngFor="let store of validation_messages.pincode">
+                <div class="caption status-danger"
+                  *ngIf="secondForm.get('pincode').hasError(store.type) && (secondForm.get('pincode').dirty || secondForm.get('pincode').touched)">
+                  <ng-container name="information-circle-outline"></ng-container> {{ store.message }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="form-group">
+            <nb-select placeholder="Select Area" [fullWidth]="true" status="primary" formControlName="area">
+              <nb-option *ngFor="let area of areas" [value]="area.area_id">{{area.area_name}}</nb-option>
+            </nb-select>
+          </div>
+          <button nbButton nbStepperPrevious>prev</button>
+          <!-- <button nbButton (ngSubmit)="onSecondSubmit()" nbStepperNext>next</button> -->
+          <button nbButton fullWidth status="primary" (click)="onSecondSubmit()" size="large" [disabled]="submitted1 || !firstForm.valid"
+            [class.btn-pulse]="submitted1" nbStepperNext>Next</button>
+        </form>
+      </nb-step>
+      <nb-step [stepControl]="thirdForm" label="Store Admin">
+        <form [formGroup]="thirdForm" class="step-container">
+          <div class="form-group">
+            <input type="text" placeholder="First Name" class="form-control" formControlName="firstName"
+              [ngClass]="{'form-control-danger': thirdForm.invalid && (thirdForm.dirty || thirdForm.touched)}">
+            <div class="thirdForm-errors">
+              <ng-container *ngFor="let store of validation_messages.firstName">
+                <div class="caption status-danger"
+                  *ngIf="thirdForm.get('firstName').hasError(store.firstName) && (thirdForm.get('firstName').dirty || thirdForm.get('firstName').touched)">
+                  <ng-container name="information-circle-outline"></ng-container> {{ store.message }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName"
+              [ngClass]="{'form-control-danger': thirdForm.invalid && (thirdForm.dirty || thirdForm.touched)}">
+            <div class="thirdForm-errors">
+              <ng-container *ngFor="let store of validation_messages.lastName">
+                <div class="caption status-danger"
+                  *ngIf="thirdForm.get('lastName').hasError(store.lastName) && (thirdForm.get('lastName').dirty || thirdForm.get('lastName').touched)">
+                  <ng-container name="information-circle-outline"></ng-container> {{ store.message }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Email" class="form-control" formControlName="email"
+              [ngClass]="{'form-control-danger': thirdForm.invalid && (thirdForm.dirty || thirdForm.touched)}">
+            <div class="thirdForm-errors">
+              <ng-container *ngFor="let store of validation_messages.email">
+                <div class="caption status-danger"
+                  *ngIf="thirdForm.get('email').hasError(store.email) && (thirdForm.get('email').dirty || thirdForm.get('email').touched)">
+                  <ng-container name="information-circle-outline"></ng-container> {{ store.message }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Phone" class="form-control" formControlName="phone"
+              [ngClass]="{'form-control-danger': thirdForm.invalid && (thirdForm.dirty || thirdForm.touched)}">
+            <div class="thirdForm-errors">
+              <ng-container *ngFor="let store of validation_messages.phone">
+                <div class="caption status-danger"
+                  *ngIf="thirdForm.get('phone').hasError(store.type) && (thirdForm.get('phone').dirty || thirdForm.get('phone').touched)">
+                  <ng-container name="information-circle-outline"></ng-container> {{ store.message }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <button nbButton nbStepperPrevious>prev</button>
+          <!-- <button nbButton nbStepperNext>Confirm</button> -->
+          <button nbButton fullWidth status="primary" (click)="onThirdSubmit()" size="large" [disabled]="submitted1 || !firstForm.valid"
+            [class.btn-pulse]="submitted1" nbStepperNext>Next</button>
+        </form>
+      </nb-step>
+      <div *ngIf="showErrorMessage" style="color: red;margin-top: 10px">{{errorMessage}}</div>
+      <nb-step [stepControl]="thirdForm" [hidden]="true" label="Third step">
+        <div class="step-container">
+          <h3>{{successMessage}}</h3>
+          <button nbButton (click)="stepper.reset()">Try again</button>
+        </div>
+      </nb-step>
+    </nb-stepper>
+  </nb-card-body>
+</nb-card>

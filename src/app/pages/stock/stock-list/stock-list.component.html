@@ -1,0 +1,22 @@
+<nb-card>
+  <nb-card-header>
+    Select Branch
+  </nb-card-header>
+
+  <nb-card-body>
+    <nb-select placeholder="Select Branch" [fullWidth]="true" status="primary" (selectedChange)="getBranchStock($event)">
+      <nb-option *ngFor="let branch of branchList" [value]="branch.branch_id">{{branch.branch_name}}</nb-option>
+    </nb-select>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    Stock List
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

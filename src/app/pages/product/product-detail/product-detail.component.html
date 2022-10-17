@@ -1,0 +1,159 @@
+<!-- <nb-card>
+  <nb-card-header>
+    Product Detail
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (createConfirm)="onCreateConfirm($event)" (editConfirm)="onEditConfirm($event)" (deleteConfirm)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    Stock
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings1" [source]="source1" (createConfirm)="onCreateConfirmS($event)" (editConfirm)="onEditConfirmS($event)" (deleteConfirm)="onDeleteConfirmS($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card> -->
+
+<div class="accordions-container row">
+
+  <div class="accordion-container col-md-12 col-lg-12 col-xxxl-12">
+    <nb-accordion>
+      <nb-accordion-item>
+        <nb-accordion-item-header>
+          Product Attributes
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          <nb-card-body>
+            <ng2-smart-table [settings]="settings" [source]="source" (createConfirm)="onCreateConfirm($event)" (editConfirm)="onEditConfirm($event)" (deleteConfirm)="onDeleteConfirm($event)">
+            </ng2-smart-table>
+          </nb-card-body>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item *ngIf="product_type == 'variable'">
+        <nb-accordion-item-header>
+          Variations
+        </nb-accordion-item-header>
+        <nb-accordion-item-body *ngIf="attributesPresent == false">
+          <nb-alert outline="info">Please Add Attributes for Parent Product to Add Variations</nb-alert>
+        </nb-accordion-item-body>
+        <nb-accordion-item-body *ngIf="attributesPresent == true">
+          <nb-card-body>
+            <ng2-smart-table [settings]="settings2" [source]="source2" (createConfirm)="onCreateConfirmV($event)" (editConfirm)="onEditConfirmV($event)" (deleteConfirm)="onDeleteConfirmV($event)">
+            </ng2-smart-table>
+          </nb-card-body>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item>
+        <nb-accordion-item-header>
+          Stock
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          <nb-card-body>
+            <ng2-smart-table [settings]="settings1" [source]="source1" (createConfirm)="onCreateConfirmS($event)" (editConfirm)="onEditConfirmS($event)" (deleteConfirm)="onDeleteConfirmS($event)">
+            </ng2-smart-table>
+          </nb-card-body>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item *ngIf="price_type == 'slab'">
+        <nb-accordion-item-header>
+          Slab Price
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          <!-- <nb-card-body>
+            <ng2-smart-table [settings]="settings2" [source]="source1" (createConfirm)="onCreateConfirmV($event)" (editConfirm)="onEditConfirmV($event)" (deleteConfirm)="onDeleteConfirmV($event)">
+            </ng2-smart-table>
+          </nb-card-body> -->
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+      <nb-accordion-item>
+        <nb-accordion-item-header>
+          Product Images
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          <nb-flip-card>
+            <nb-card-front>
+              <nb-card>
+                <nb-card-body>
+                  <div class="row">
+                    <div class="col-md-3" *ngFor="let productImage of productImages">
+                      <nb-badge text="Delete" status="danger" position="bottom right" (click)="deleteProductImage($event,productImage.product_image_id)">
+                      </nb-badge>
+                      <img class="product_image" src="{{productImage.image_path}}">
+                    </div>
+                  </div>
+                </nb-card-body>
+              </nb-card>
+            </nb-card-front>
+            <nb-card-back>
+              <nb-card>
+                <nb-card-body>
+                  <form [formGroup]="imageForm" (ngSubmit)="onSubmit()">
+                    <nb-card status="success">
+                      <nb-card-header>
+                        Images <span><button type="button" nbButton status="primary" (click)="addImage()" class="rounded-pill" >Add More</button></span>
+                      </nb-card-header>
+                      <nb-card-body class="example-items-col">
+                        <table class="table" formArrayName="images">
+                          <tr *ngFor="let image of images().controls; let i=index" [formGroupName]="i">
+                            <td>
+                              <div class="form-group">
+                                <input type="text" formControlName="image_title" nbInput fullWidth fieldSize="medium" placeholder="Title"/>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="form-group">
+                                <input type="text" formControlName="position" nbInput fullWidth fieldSize="medium" placeholder="Position"/>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="form-group">
+                                <textarea nbInput fullWidth fieldSize="tiny" formControlName="description" placeholder="Description"></textarea>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="form-group">
+                                <input type="text" formControlName="alt_text" nbInput fullWidth fieldSize="medium" placeholder="Alt Text"/>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="form-group">
+                                <input type="file" formControlName="product_image" id="{{i}}" nbInput fullWidth fieldSize="medium" autofocus placeholder="Image" (change)="fileChangeEvent($event)" accept="image/png, image/jpeg, image/jpg" />
+                              </div>
+                            </td>
+                            <td>
+                              <button (click)="removeImage(i)" status="primary" class="btn btn-danger">Remove</button>
+                            </td>
+                          </tr>
+                        </table>
+                      </nb-card-body>
+                      <nb-card-footer>
+                        <div class="form-group">
+                          <button nbButton
+                              fullWidth
+                              status="primary"
+                              size="large"
+                              [class.btn-pulse]="submitted">
+                              Submit
+                          </button>
+                        </div>
+                      </nb-card-footer>
+                    </nb-card>
+                  </form>
+                </nb-card-body>
+              </nb-card>
+            </nb-card-back>
+          </nb-flip-card>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+  </div>
+</div>

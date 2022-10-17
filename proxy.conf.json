@@ -1,0 +1,6 @@
+{
+    "/api": {
+        "target": "http://localhost/mPos/public/index.php",
+        "secure": false
+    }
+}
